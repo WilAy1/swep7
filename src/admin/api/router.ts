@@ -1,7 +1,7 @@
 import express from 'express';
-import { authenticate } from '../../users/auth/middleware';
+import { authenticate } from '../../voters/auth/middleware';
 
 export const adminRouter = express.Router();
 
 adminRouter.use(authenticate);
-adminRouter.use('/');
+adminRouter.use('/api/polls', );

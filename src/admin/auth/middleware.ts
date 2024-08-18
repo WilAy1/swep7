@@ -18,7 +18,7 @@ export function authenticateAdmin(req, res, next) {
     }
   
     // Verify the token using the secret key
-    jwt.verify(token, env.SECURE_GEN_KEY, (err, user) => {
+    jwt.verify(token, env.SECURE_ADMIN_AUTH_KEY, (err, user) => {
       if (err) {
         return res.status(StatusCodes.FORBIDDEN).json({ success: false, error: "Access forbidden" }); // Forbidden if token is invalid
       }
