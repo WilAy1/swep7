@@ -107,7 +107,7 @@ Content-Type: application/json
 
 **Example Request:**
 ```http
-GET api/voters/collection-exists?collection_id=53490bce-3b70-4d06-afb1-e75c6f725110
+GET /api/voters/collection-exists?collection_id=53490bce-3b70-4d06-afb1-e75c6f725110
 Accept: application/json
 ```
 
@@ -128,7 +128,7 @@ Accept: application/json
 
 **Example Request:**
 ```http
-POST api/voters/fetch-collection
+POST /api/voters/fetch-collection
 ```
 
 **Example Response:** 
@@ -215,7 +215,7 @@ POST api/voters/fetch-collection
 
 **Example Request:**
 ```http
-GET api/manage/collection/fetch?collection_id=b84fca04-a633-4c91-9835-dac5f30c331c
+GET /api/manage/collection/fetch?collection_id=b84fca04-a633-4c91-9835-dac5f30c331c
 Accept: application/json
 ```
 
@@ -314,7 +314,7 @@ Accept: application/json
 
 **Example Request:** 
 ```http
-POST api/manage/collection/create
+POST /api/manage/collection/create
 Content-Type: multipart/form-data
 ```
 
