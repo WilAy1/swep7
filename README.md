@@ -11,7 +11,7 @@ http://localhost:3000
 
 ## Authorization
 
-Some endpoints require a Bearer Token for authorization. The token should be included in the `Authorization` header of the request.
+Some endpoints require a Bearer Token for authorization. The token should be included in the request's `Authorization` header.
 
 **Example:**
 Authorization: Bearer YOUR_ACCESS_TOKEN
@@ -30,7 +30,7 @@ In case of an error, the API will return a response in the following format:
 
 ```
 
-## Endpoints
+## Endpoints (Voters)
 
 ### 1. Login
 
@@ -100,7 +100,7 @@ Content-Type: application/json
 
 ### 3. Collection Exists
 
-**Description:** This endpoint checks if a collection with it's `id (collection_id)` exists. This endpoint doesn't require authentication.
+**Description:** This endpoint checks if a collection with its `id (collection_id)` exists. This endpoint doesn't require authentication.
 
 **Parameters:**
 - `collection_id` (UUID, required): The ID of the collection we're checking if it exists.
@@ -110,6 +110,7 @@ Content-Type: application/json
 GET api/voters/collection-exists?collection_id=53490bce-3b70-4d06-afb1-e75c6f725110
 Accept: application/json
 ```
+
 **Example Response:**
 ```json
 {
