@@ -428,7 +428,7 @@ Content-Type: multipart/form-data
 }
 ```
 
-**Example Implementation:**
+**Implementation:**
 
 ```javascript
 const collectionData = {
