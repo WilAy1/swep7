@@ -2,7 +2,7 @@ import { v4 as uuidv4, validate as validateUUID } from 'uuid';
 import Query from '../../db/query';
 import { isEmpty } from '../../utils/utils';
 import APIResponse from '../../interface/api.interface';
-import { Polls, Votes } from '../../admin/api/polls/polls';
+import { Polls, Votes } from '../../admin/polls/polls';
 import { env } from '../../utils/env';
 import jwt from 'jsonwebtoken';
 

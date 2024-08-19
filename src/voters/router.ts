@@ -5,5 +5,6 @@ import { collection } from './main/collection';
 
 export const votersRouter = express.Router();
 
+
 votersRouter.use(excludeFromAuth(['/voters/login', '/voters/verify-code', '/voters/collection-exists']));
-votersRouter.use('/voters/', loginRouter, collection);
+votersRouter.use('/voters', loginRouter, collection);

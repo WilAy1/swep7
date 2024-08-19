@@ -17,7 +17,7 @@ CREATE TABLE collection(
 
 CREATE TABLE polls(
 	id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-	collection_id UUID NOT NULL,
+	collection_id UUID NOT NULL REFERENCES collection(id) ON DELETE CASCADE,
 	creator_id UUID NOT NULL,
 	title TEXT NOT NULL,
 	required BOOL NOT NULL,
@@ -29,8 +29,8 @@ CREATE TABLE polls(
 
 CREATE TABLE poll_options(
 	id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-	collection_id UUID NOT NULL,
-	poll_id UUID NOT NULL,
+	collection_id UUID NOT NULL REFERENCES collection(id) ON DELETE CASCADE,
+	poll_id UUID NOT NULL REFERENCES polls(id) ON DELETE CASCADE,
 	creator_id UUID NOT NULL,
 	value TEXT NOT NULL,
 	no_of_votes INT NOT NULL DEFAULT 0,
@@ -48,9 +48,9 @@ CREATE TABLE voters(
 
 CREATE TABLE votes(
 	id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-	collection_id UUID NOT NULL,
-	poll_id UUID NOT NULL,
-	option_id UUID NOT NULL,
+	collection_id UUID NOT NULL REFERENCES collection(id) ON DELETE CASCADE,
+	poll_id UUID NOT NULL REFERENCES polls(id) ON DELETE CASCADE,
+	option_id UUID NOT NULL REFERENCES poll_options(id) ON DELETE CASCADE,
 	voter_id UUID NOT NULL,
 	voter_email VARCHAR(255) NOT NULL,
 	option_value TEXT NOT NULL,

@@ -1,5 +1,5 @@
 import express from 'express';
-import { isValidVoteStruct, Polls, Votes } from '../../admin/api/polls/polls';
+import { isValidVoteStruct, Polls, Votes } from '../../admin/polls/polls';
 import { StatusCodes } from 'http-status-codes';
 import APIResponse from '../../interface/api.interface';
 import { isEmpty } from '../../utils/utils';
@@ -63,7 +63,22 @@ collection.get('/fetch-collection', async (req, res) => {
 
         const collection = await polls.fetchCollection();
 
-        return res.status(StatusCodes.OK).json(collection);
+        if(!collection){
+            const response = {
+                status: false,
+                message: "Collection doesn't exist",
+                data: {}
+            }
+
+            return res.status(StatusCodes.NOT_FOUND).json(response);
+        }
+
+        const response: APIResponse = {
+            success: true,
+            message: "success",
+            data: collection
+        }
+        return res.status(StatusCodes.OK).json(response);
 
     }
     catch (error){
@@ -136,12 +151,12 @@ collection.post('/submit-vote', async (req, res) => {
          *  votes: [
          *      {
          *          poll_id: "p_id",
-         *          option_text: "",
+         *          option_value: "",
          *          option_id: "o_id"
          *      },
          *      {
          *          poll_id: "p_id",
-         *          option_text: "",
+         *          option_value: "",
          *          option_id: "o_id"
          *      },
          *  ]

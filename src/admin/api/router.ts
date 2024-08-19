@@ -1,7 +1,8 @@
 import express from 'express';
-import { authenticate } from '../../voters/auth/middleware';
+import { authenticateAdmin } from '..//auth/middleware';
+import { collectionRouter } from './main';
 
 export const adminRouter = express.Router();
 
-adminRouter.use(authenticate);
-adminRouter.use('/api/polls', );
+adminRouter.use(authenticateAdmin);
+adminRouter.use('/collection', collectionRouter);
