@@ -158,7 +158,7 @@ POST /api/voters/fetch-collection
                     },
                     {
                         "id": "4e621287-d9ca-4da9-8d6f-92b548e97a78",
-                        "value": "Ayomide Wilson",
+                        "value": "Wilson",
                         "created": "2024-08-19T19:39:18.744Z"
                     },
                     {
@@ -230,7 +230,7 @@ Accept: application/json
         "title": "Student Election 2024",
         "start_time": "2024-08-19T17:46:22.741Z",
         "end_time": "2024-08-20T17:46:22.741Z",
-        "eligible_voters": "ayomikunakintade@gmail.com,awakintade@gmail.com",
+        "eligible_voters": "example@gmail.com,example1@gmail.com",
         "no_of_eligible_voters": 2,
         "no_of_polls": 2,
         "no_of_votes": 2,
@@ -254,7 +254,7 @@ Accept: application/json
                     },
                     {
                         "id": "4e621287-d9ca-4da9-8d6f-92b548e97a78",
-                        "value": "Ayomide Wilson",
+                        "value": "Wilson",
                         "created": "2024-08-19T19:39:18.744Z",
                         "no_of_votes": 0
                     },
@@ -329,7 +329,7 @@ Content-Type: multipart/form-data
         "title": "Student Election 2024",
         "start_time": "2024-08-19T17:46:22.741Z",
         "end_time": "2024-08-20T17:46:22.741Z",
-        "eligible_voters": "ayomikunakintade@gmail.com,awakintade@gmail.com",
+        "eligible_voters": "example@gmail.com,example1@gmail.com",
         "no_of_eligible_voters": 2,
         "no_of_polls": 2,
         "no_of_votes": 0,
@@ -370,7 +370,7 @@ Content-Type: multipart/form-data
                         "collection_id": "b84fca04-a633-4c91-9835-dac5f30c331c",
                         "poll_id": "932610f3-105f-4d19-925e-0674d8a4e23e",
                         "creator_id": "550e8400-e29b-41d4-a716-446655440000",
-                        "value": "Ayomide Wilson",
+                        "value": "Wilson",
                         "no_of_votes": 0,
                         "created": "2024-08-19T19:39:18.744Z"
                     }
