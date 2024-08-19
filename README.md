@@ -78,8 +78,8 @@ POST /api/voters/verify-code
 Content-Type: application/json
 
 {
-    "email: "user@example.com",
-    "collection_id: "550e8400-e29b-41d4-a716-446655440000",
+    "email": "user@example.com",
+    "collection_id": "550e8400-e29b-41d4-a716-446655440000",
     "code": "599015"
 }
 ```
@@ -108,6 +108,7 @@ Content-Type: application/json
 **Example Request:**
 ```http
 GET api/voters/collection-exists?collection_id=53490bce-3b70-4d06-afb1-e75c6f725110
+Accept: application/json
 ```
 **Example Response:**
 ```json
