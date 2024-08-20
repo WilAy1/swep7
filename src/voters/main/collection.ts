@@ -160,7 +160,7 @@ collection.post('/submit-vote', async (req, res) => {
          *          poll_id: "p_id",
          *          option_value: "",
          *          option_id: "o_id"
-         *      },
+         *      }, 
          *  ]
          * }
          */
