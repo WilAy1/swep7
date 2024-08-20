@@ -5,17 +5,16 @@ This API allows you to manage resources and perform various operations.
 # SWEP GROUP 7 PROJECT API DOCUMENTATION
 
 ## Table of Contents
-1. [Introduction](#introduction)
-2. [Base URL](#base-url)
-3. [Authorization](#authorization)
-4. [Error Handling](#error-handling)
-5. [Endpoints (Voters)](#endpoints-voters)
+1. [Base URL](#base-url)
+2. [Authorization](#authorization)
+3. [Error Handling](#error-handling)
+4. [Endpoints (Voters)](#endpoints-voters)
      1. [Login](#1-login)
      2. [Verify Code](#2-verify-code)
      3. [Collection Exists](#3-collection-exists)
      4. [Fetch Collection](#4-fetch-collection)
      5. [Vote](#5-vote)
-6. [Endpoints (Admin)](#endpoints-admin)
+5. [Endpoints (Admin)](#endpoints-admin)
      1. [Register](#1-register)
      2. [Login](#2-login)
      3. [Verify Email Address](#3-verify-email-address)
