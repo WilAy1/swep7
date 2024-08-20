@@ -192,6 +192,47 @@ POST /api/voters/fetch-collection
 }
 ```
 
+### 5. Vote
+***Description:** This endpoint submits all selected options in polls. This endpoint requires authentication.
+
+**Parameters:** 
+- `collection_id` (UUID, required): ID for the collection the voter is voting in
+- `votes` (array, required): an array of votes.
+    - `poll_id` (UUID, required): ID for a particular poll.
+    - `option_id` (UUID, required): ID for the selected option.
+    - `option_value` (UUID, required): Value of the selected option.
+
+**Example Request:**
+```http
+POST /api/voters/submit-vote
+
+{
+    "collection_id": "02c7a387-1063-47db-a4e9-68f623abfb71",
+    "votes": [
+        {
+            "poll_id": "440b000b-4190-4eee-8aab-2ddda3b65cea",
+            "option_value": "LordFem",
+            "option_id": "71433364-b8eb-4856-91c7-c615ffae9a39"
+        },
+        {
+            "poll_id": "40dafdce-ab17-4ea2-9089-5e40c93e664e",
+            "option_id": "9b162a88-410d-4aa4-86a4-c972e2d4629b",
+            "option_value": "Ayomikun"
+        }
+    ]
+}
+```
+
+**Example Response:**
+
+```json
+{
+    "success": true,
+    "message": "successfully voted",
+    "data": {}
+}
+```
+
 
 
 ## Endpoints (Admin)
@@ -201,8 +242,8 @@ POST /api/voters/fetch-collection
 **Description:** Registration endpoint for creators of elections/collections.
 
 **Parameters:** 
-- email (string, required)
-- password (string, required, >=8 characters)
+- `email` (string, required)
+- `password` (string, required, >=8 characters)
 
 **Example Request:**
 ```http
@@ -210,8 +251,8 @@ POST /api/manage/account/register
 Content-Type: application/json
 
 {
-    "email: "example@gmail.com",
-    "password: "password"
+    "email": "example@gmail.com",
+    "password": "password"
 }
 ```
 
@@ -229,8 +270,8 @@ Content-Type: application/json
 **Description:** Login endpoint for creators of elections/collections
 
 **Parameters:** 
-- email (string, required)
-- password (string, required, >=8 characters)
+- `email` (string, required)
+- `password` (string, required, >=8 characters)
 
 **Example Request:**
 ```http
@@ -238,8 +279,8 @@ POST /api/manage/account/login
 Content-Type: application/json
 
 {
-    "email: "example@gmail.com",
-    "password: "password"
+    "email": "example@gmail.com",
+    "password": "password"
 }
 ```
 
@@ -262,8 +303,8 @@ Content-Type: application/json
 **Description:** Verify the email address.
 
 **Parameters:** 
-- email (string, required)
-- code (string|number, required, >=8 characters)
+- `email` (string, required)
+- `code` (string|number, required, >=8 characters)
 
 **Example Request:**
 ```http
@@ -419,7 +460,7 @@ Content-Type: multipart/form-data
 }
 ```
 
-**Implementation:**
+**Implementation:** An example of how to implement it.
 
 ```javascript
 const collectionData = {
