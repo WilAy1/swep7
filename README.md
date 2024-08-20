@@ -2,6 +2,28 @@
 
 This API allows you to manage resources and perform various operations.
 
+# SWEP GROUP 7 PROJECT API DOCUMENTATION
+
+## Table of Contents
+1. [Introduction](#introduction)
+2. [Base URL](#base-url)
+3. [Authorization](#authorization)
+4. [Error Handling](#error-handling)
+5. [Endpoints (Voters)](#endpoints-voters)
+     1. [Login](#login)
+     2. [Verify Code](#verify-code)
+     3. [Collection Exists](#collection-exists)
+     4. [Fetch Collection](#fetch-collection)
+     5. [Vote](#vote)
+6. [Endpoints (Admin)](#endpoints-admin)
+     1. [Register](#register)
+     2. [Login](#login)
+     3. [Verify Email Address](#verify-email-address)
+     4. [Create Collection](#create-collection)
+     5. [Fetch All Collections](#fetch-all-collections)
+     6. [Fetch Collection](#fetch-collection)
+
+
 ## Base URL
 
 All API requests should be made to the following base URL:
@@ -326,7 +348,7 @@ Content-Type: application/json
 }
 ```
 
-### 4. Create collection
+### 4. Create Collection
 
 **Description:** This endpoint creates a collection/election with polls and options. Authentication is required.
 
@@ -616,7 +638,7 @@ Accept: application/json
 ```
 
 
-### 5. Fetch Collection
+### 6. Fetch Collection
 
 **Description:** This endpoint fetches the collection details including polls and options. It also fetches number of votes which and some other data with isn't available for the voter's endpoint. This endpoint requires authentication.
 
