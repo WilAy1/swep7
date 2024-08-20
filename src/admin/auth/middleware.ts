@@ -2,6 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import jwt from 'jsonwebtoken';
 import { env } from "process";
 import APIResponse from '../../interface/api.interface';
+import { NextFunction, Request, Response } from 'express';
 
 export function authenticateAdmin(req, res, next) {
     
@@ -17,12 +18,22 @@ export function authenticateAdmin(req, res, next) {
       return res.status(StatusCodes.UNAUTHORIZED).json(response); // Unauthorized if token is missing
     }
   
-    // Verify the token using the secret key
     jwt.verify(token, env.SECURE_ADMIN_AUTH_KEY, (err, user) => {
       if (err) {
         return res.status(StatusCodes.FORBIDDEN).json({ success: false, error: "Access forbidden" }); // Forbidden if token is invalid
       }
       req.user = user;
-      next(); // Proceed to the next middleware
+      next();
     });
+}
+
+
+export function excludeFromAdminAuth(paths: string[]) {
+  return function(req: Request, res: Response, next: NextFunction) {
+      if (paths.includes(req.path)) {
+          next();
+      } else {
+          authenticateAdmin(req, res, next);
+      }
+  };
 }

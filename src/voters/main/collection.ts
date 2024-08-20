@@ -1,8 +1,10 @@
 import express from 'express';
-import { isValidVoteStruct, Polls, Votes } from '../../admin/polls/polls';
 import { StatusCodes } from 'http-status-codes';
 import APIResponse from '../../interface/api.interface';
 import { isEmpty } from '../../utils/utils';
+import Polls from '../../services/polls';
+import { isValidVoteStruct } from '../../interface/polls.interface';
+import { Votes } from '../../services/Votes';
 
 export const collection = express.Router();
 

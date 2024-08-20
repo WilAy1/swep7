@@ -19,3 +19,12 @@ export function sanitizeString(str) {
 
 
 export const uniqueList = (arr: Array<any>) => [...new Set(arr)];
+
+
+export function isValidPassword(password: string): boolean {
+    return password.length >= 8;
+}
+
+export function createRandomCode(){
+    return Math.floor(100000 + Math.random() * 900000);
+}

@@ -1,6 +1,6 @@
 import express from 'express';
 import { excludeFromAuth } from './auth/middleware';
-import { loginRouter } from './login/login_router';
+import { loginRouter } from './login/login.router';
 import { collection } from './main/collection';
 
 export const votersRouter = express.Router();

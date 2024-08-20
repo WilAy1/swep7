@@ -1,10 +1,11 @@
 import { v4 as uuidv4, validate as validateUUID } from 'uuid';
 import Query from '../../db/query';
-import { isEmpty } from '../../utils/utils';
+import { createRandomCode, isEmpty, isValidEmail } from '../../utils/utils';
 import APIResponse from '../../interface/api.interface';
-import { Polls, Votes } from '../../admin/polls/polls';
 import { env } from '../../utils/env';
 import jwt from 'jsonwebtoken';
+import Polls from '../../services/polls';
+import { Votes } from '../../services/Votes';
 
 interface LoginParam {
     email: string,
@@ -252,16 +253,4 @@ export class Login {
     sendMail(){
 
     }
-}
-
-
-
-function isValidEmail(email: string){
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-}
-
-
-function createRandomCode(){
-    return Math.floor(100000 + Math.random() * 900000);
 }

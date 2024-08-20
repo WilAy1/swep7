@@ -57,3 +57,17 @@ CREATE TABLE votes(
 	casted TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	UNIQUE(voter_id, poll_id)
 );
+
+CREATE TABLE creators (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    is_verified BOOL NOT NULL DEFAULT FALSE,
+    verification_time TIMESTAMP,
+    status VARCHAR(16) DEFAULT 'inactive' CHECK (status IN ('active', 'inactive')), -- Enum-like check for active and inactive
+    verification_code INT NOT NULL, -- INT doesn't take a length parameter in PostgreSQL
+    code_expires TIMESTAMP,
+    created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    last_login TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
