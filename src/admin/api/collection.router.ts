@@ -5,8 +5,8 @@ import { isEmpty, isValidEmail } from '../../utils/utils';
 import { StatusCodes } from 'http-status-codes';
 import jwt from 'jsonwebtoken';
 import { env } from '../../utils/env';
-import { AdminPolls } from '../../services/AdminPolls';
-import Polls from '../../services/polls';
+import { AdminPolls } from '../../models/AdminPolls';
+import Polls from '../../models/polls';
 
 const upload = multer({ storage: multer.memoryStorage() });
 

@@ -4,8 +4,8 @@ import { createRandomCode, isEmpty, isValidEmail } from '../../utils/utils';
 import APIResponse from '../../interface/api.interface';
 import { env } from '../../utils/env';
 import jwt from 'jsonwebtoken';
-import Polls from '../../services/polls';
-import { Votes } from '../../services/Votes';
+import Polls from '../../models/polls';
+import { Votes } from '../../models/Votes';
 
 interface LoginParam {
     email: string,

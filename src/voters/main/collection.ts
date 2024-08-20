@@ -2,9 +2,9 @@ import express from 'express';
 import { StatusCodes } from 'http-status-codes';
 import APIResponse from '../../interface/api.interface';
 import { isEmpty } from '../../utils/utils';
-import Polls from '../../services/polls';
+import Polls from '../../models/polls';
 import { isValidVoteStruct } from '../../interface/polls.interface';
-import { Votes } from '../../services/Votes';
+import { Votes } from '../../models/Votes';
 
 export const collection = express.Router();
 
