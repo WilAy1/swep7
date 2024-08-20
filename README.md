@@ -2,8 +2,6 @@
 
 This API allows you to manage resources and perform various operations.
 
-# SWEP GROUP 7 PROJECT API DOCUMENTATION
-
 ## Table of Contents
 1. [Base URL](#base-url)
 2. [Authorization](#authorization)
