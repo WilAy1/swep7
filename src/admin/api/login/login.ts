@@ -94,7 +94,7 @@ export default class AdminLogin {
         );
 
         return {
-            message: 'Login Successful',
+            message: 'success',
             data: {
                 token: bearerToken,
                 expires_in: 30*24*60*60,
