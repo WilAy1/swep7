@@ -15,13 +15,13 @@ This API allows you to manage resources and perform various operations.
      3. [Collection Exists](#3-collection-exists)
      4. [Fetch Collection](#4-fetch-collection)
      5. [Vote](#5-vote)
-6. [Endpoints (Admin)](#1-endpoints-admin)
-     1. [Register](#2-register)
-     2. [Login](#3-login)
-     3. [Verify Email Address](#4-verify-email-address)
-     4. [Create Collection](#5-create-collection)
-     5. [Fetch All Collections](#6-fetch-all-collections)
-     6. [Fetch Collection](#7-fetch-collection)
+6. [Endpoints (Admin)](#endpoints-admin)
+     1. [Register](#1-register)
+     2. [Login](#2-login)
+     3. [Verify Email Address](#3-verify-email-address)
+     4. [Create Collection](#4-create-collection)
+     5. [Fetch All Collections](#5-fetch-all-collections)
+     6. [Fetch Collection](#6-fetch-collection)
 
 
 ## Base URL
