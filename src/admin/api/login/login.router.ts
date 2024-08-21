@@ -101,6 +101,13 @@ adminLoginRouter.post('/verify', async (req, res)=>{
         }
 
         const adminLogin = new AdminLogin();
+        if(typeof code != "number"){
+            return res.status(StatusCodes.BAD_REQUEST).json({
+                success: false,
+                message: "Code must be a number",
+                data: {}
+            });
+        }
         const response = await adminLogin.verify(
             {
                 email: email,
