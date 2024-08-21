@@ -142,7 +142,7 @@ class Query {
         }
         catch(error) {
             console.error(error);
-            return false;
+            throw new Error(error);
         }
     }
 
@@ -162,7 +162,7 @@ class Query {
         catch (error) {
             // failed to insert
             console.error(error);
-            return;
+            throw new Error(error);
         }
     }
 
@@ -184,7 +184,7 @@ class Query {
         }
         catch(error) {
             console.error(error);
-            return false;
+            throw new Error(error);
         }
     }
 
@@ -200,7 +200,7 @@ class Query {
         }
         catch(error){
             console.error(error);
-            return [];
+            throw new Error(error);
         }
     }
 
@@ -211,7 +211,7 @@ class Query {
         }
         catch(error) {
             console.error(error);
-            return;
+            throw new Error(error);
         }
     }
 
