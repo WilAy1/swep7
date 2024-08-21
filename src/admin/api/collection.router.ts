@@ -133,7 +133,7 @@ collectionRouter.get('/fetch/all', async (req, res) => {
         const collection = await adminPolls.fetchAllCollection();
         const data = {
             no_of_collections: collection.length,
-            collection: collection
+            collections: collection
         }
         const apiResponse: APIResponse = {
             success: true,
