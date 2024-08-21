@@ -131,10 +131,14 @@ collectionRouter.get('/fetch/all', async (req, res) => {
 
         const adminPolls = new AdminPolls(adminId);
         const collection = await adminPolls.fetchAllCollection();
+        const data = {
+            no_of_collections: collection.length,
+            collection: collection
+        }
         const apiResponse: APIResponse = {
             success: true,
             message: "success",
-            data: collection
+            data: data
         } 
         return res.status(StatusCodes.OK).json(apiResponse);
     }
