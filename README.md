@@ -539,7 +539,7 @@ Accept: application/json
     "message": "success",
     "data": {
         "no_of_collections": 1,
-        "collection": [
+        "collections": [
             {
                 "id": "2e30f29d-d495-42ef-a490-69b5251997b9",
                 "title": "Collection 2",
