@@ -281,100 +281,50 @@ Accept: application/json
 {
     "success": true,
     "message": "success",
-    "data": [
-        {
-            "id": "02c7a387-1063-47db-a4e9-68f623abfb71",
-            "title": "Collection 1",
-            "start_time": "2024-08-19T17:46:22.741Z",
-            "end_time": "2024-08-20T17:46:22.741Z",
-            "no_of_polls": 2,
-            "created": "2024-08-20T20:39:10.483Z",
-            "polls": [
-                {
-                    "id": "440b000b-4190-4eee-8aab-2ddda3b65cea",
-                    "title": "President",
-                    "required": true,
-                    "no_of_options": 3,
-                    "created": "2024-08-20T20:39:10.558Z",
-                    "options": [
-                        {
-                            "id": "569d48d2-c435-470f-a1af-02c12d6c8442",
-                            "value": "DrBush",
-                            "created": "2024-08-20T20:39:10.568Z"
-                        },
-                        {
-                            "id": "71433364-b8eb-4856-91c7-c615ffae9a39",
-                            "value": "LordFem",
-                            "created": "2024-08-20T20:39:10.570Z"
-                        },
-                        {
-                            "id": "985ce850-8be1-4a1c-bbc6-11333a04c9c0",
-                            "value": "Another Option",
-                            "created": "2024-08-20T20:39:10.571Z"
-                        }
-                    ]
-                },
-                {
-                    "id": "40dafdce-ab17-4ea2-9089-5e40c93e664e",
-                    "title": "Treasurer",
-                    "required": false,
-                    "no_of_options": 2,
-                    "created": "2024-08-20T20:39:10.573Z",
-                    "options": [
-                        {
-                            "id": "9b162a88-410d-4aa4-86a4-c972e2d4629b",
-                            "value": "Ayomikun",
-                            "created": "2024-08-20T20:39:10.574Z"
-                        },
-                        {
-                            "id": "0f17d931-c8e8-4633-84c4-4c7bd8827439",
-                            "value": "Williams",
-                            "created": "2024-08-20T20:39:10.575Z"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "id": "52ca3c3b-c330-4e29-8e06-94ee5f3318ae",
-            "title": "Collection 2",
-            "start_time": "2024-08-19T17:46:22.741Z",
-            "end_time": "2024-08-20T17:46:22.741Z",
-            "no_of_polls": 1,
-            "created": "2024-08-20T20:41:08.717Z",
-            "polls": [
-                {
-                    "id": "8ff5984a-ab84-4a63-bb93-6c8b23eb17d5",
-                    "title": "Poll 1",
-                    "required": true,
-                    "no_of_options": 4,
-                    "created": "2024-08-20T20:41:08.722Z",
-                    "options": [
-                        {
-                            "id": "2c0bf312-9474-4692-ba50-f3ab37585cc3",
-                            "value": "Option 1",
-                            "created": "2024-08-20T20:41:08.724Z"
-                        },
-                        {
-                            "id": "ba3bae08-3e54-4a1e-ad0e-54cd7158b716",
-                            "value": "Option 2",
-                            "created": "2024-08-20T20:41:08.726Z"
-                        },
-                        {
-                            "id": "5ad2d67e-9f60-4e16-ab57-d7f678e6dcd5",
-                            "value": "Option 3",
-                            "created": "2024-08-20T20:41:08.727Z"
-                        },
-                        {
-                            "id": "f7436e55-eccc-44de-b491-2186fe4946f5",
-                            "value": "Option 4",
-                            "created": "2024-08-20T20:41:08.728Z"
-                        }
-                    ]
-                }
-            ]
-        }
-    ]
+    "data": {
+        "no_of_collections": 1,
+        "collection": [
+            {
+                "id": "2e30f29d-d495-42ef-a490-69b5251997b9",
+                "title": "Collection 2",
+                "start_time": "2024-08-19T17:46:22.741Z",
+                "end_time": "2024-08-20T17:46:22.741Z",
+                "no_of_polls": 1,
+                "created": "2024-08-21T22:03:05.969Z",
+                "polls": [
+                    {
+                        "id": "9bb6ade4-cdfc-4b95-b71a-b799d79e3f8d",
+                        "title": "Poll 1",
+                        "required": true,
+                        "no_of_options": 4,
+                        "created": "2024-08-21T22:03:05.982Z",
+                        "options": [
+                            {
+                                "id": "334cc699-934d-44bd-8808-27c027e96d47",
+                                "value": "Option 1",
+                                "created": "2024-08-21T22:03:05.986Z"
+                            },
+                            {
+                                "id": "27e6f25f-23d6-4ec2-a4f0-4e4dc3900eb5",
+                                "value": "Option 2",
+                                "created": "2024-08-21T22:03:05.992Z"
+                            },
+                            {
+                                "id": "1e23fba3-de91-4a7d-860d-f7345753e6de",
+                                "value": "Option 3",
+                                "created": "2024-08-21T22:03:05.993Z"
+                            },
+                            {
+                                "id": "869d9250-0e4b-4790-8d7e-bbecd7dad1e2",
+                                "value": "Option 4",
+                                "created": "2024-08-21T22:03:05.998Z"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
 }
 ```
 
