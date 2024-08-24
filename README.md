@@ -523,6 +523,8 @@ const collectionData = {
 const formData = new FormData(); // create new formdata
 formData.append("collection", JSON.stringify(collectionData)); // add collection to formdata
 
+formData.append("collection.eligible_voters", eligibleVotersFile);
+
 // Attach images separately if they exist
 collectionData.polls.forEach((poll, pollIndex) => {
     poll.options.forEach((option, optionIndex) => {
