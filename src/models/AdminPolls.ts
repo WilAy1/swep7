@@ -1,6 +1,11 @@
+import { Stream } from "stream";
 import Query from "../db/query";
 import { isEmpty, sanitizeString, uniqueList } from "../utils/utils";
 import Polls from "./polls";
+import fs from 'fs';
+import { writeFile } from 'fs/promises';
+import path from "path";
+import mime from 'mime-types';
 
 export class AdminPolls {
     private readonly adminId: string;
@@ -8,6 +13,7 @@ export class AdminPolls {
     private readonly pollsTable: Query;
     private readonly optionsTable: Query;
     private readonly creatorTable: Query;
+    private readonly fileDir: string;
     
     constructor(adminId: string){
         this.adminId = adminId;
@@ -16,6 +22,14 @@ export class AdminPolls {
         this.pollsTable = new Query("polls");
         this.optionsTable = new Query("poll_options");
         this.creatorTable = new Query("creators");
+
+        const currentDirectory = process.cwd();
+
+        const rootDir = currentDirectory.includes('/src')
+        ? path.resolve(currentDirectory, '../')
+        : currentDirectory;
+      
+        this.fileDir = `${rootDir}/uploads`;
     }
 
     async ownsCollection(collectionId: string) : Promise<boolean> {
@@ -81,9 +95,21 @@ export class AdminPolls {
         }
     }
 
-    async createCollection(collection, files){
+    async saveFile(file: { buffer: string | NodeJS.ArrayBufferView | Iterable<string | NodeJS.ArrayBufferView> | AsyncIterable<string | NodeJS.ArrayBufferView> | Stream; }, filePath: fs.PathLike | fs.promises.FileHandle) {
+        try {
+            await writeFile(filePath, file.buffer);
+        }
+        catch(error){
+            console.error(error);
+            throw new Error(error);
+        }
+    }
+
+    async createCollection(collection, files, noOfVoters){
 
         try {
+            const eligibleVotersFile = files.find(file => file.fieldname === "collection.eligible_voters");
+
 
             const creatorResult = await this.creatorTable.select({
                 cols: ["id"],
@@ -107,9 +133,6 @@ export class AdminPolls {
                 const startAt = startDate.toISOString();
                 const endAt = endDate.toISOString();
                 
-                const eligibleVoters = uniqueList(eligible_voters.split(","));
-                const noOfVoters = eligibleVoters.length;
-                
                 const collectionTitle = sanitizeString(title);
                 const noOfPolls = polls.length;
                 
@@ -131,7 +154,7 @@ export class AdminPolls {
                         collectionTitle,
                         startAt,
                         endAt,
-                        eligibleVoters.toString(), //convert the list to string
+                        "",
                         noOfVoters,
                         noOfPolls,
                         0
@@ -143,8 +166,13 @@ export class AdminPolls {
                 if(insertResponse){
                     const collectionId = insertResponse['id'];
 
-                    for(const poll of polls){
-                        await this.createPoll(poll, collectionId, files);
+                    const fileName = `${collectionId}${path.extname(eligibleVotersFile.originalname)}`;
+                    const fDir = path.join(this.fileDir, 'csv', fileName);
+
+                    await this.saveFile(eligibleVotersFile, fDir);
+
+                    for(const [ key, poll ] of polls.entries()){
+                        await this.createPoll({index: key, poll: poll}, collectionId, files);
                     }
 
                     return collectionId;
@@ -183,8 +211,11 @@ export class AdminPolls {
         //const {}
     }
     
-    async createPoll(poll, collectionId: string, files){
+    async createPoll({index, poll}, collectionId: string, files){
+        
         try{
+
+
             const { title, options } = poll;
             const pollTitle = sanitizeString(title);
             const required = poll.required || false;
@@ -214,8 +245,9 @@ export class AdminPolls {
             if(insertResult){
                 const pollId = insertResult['id'];
 
-                for(const option of options){
-                    await this.createOption(option, collectionId, pollId, files);
+                for(const [ key, option ] of options.entries()){
+                    const imageFile = files.find(file => file.fieldname === `collection.polls[${index}].options[${key}].image`) || null;
+                    await this.createOption(option, collectionId, pollId, imageFile);
                 }
             }
         }
@@ -225,20 +257,14 @@ export class AdminPolls {
         }
     }
 
-    async createOption(option, collectionId: string, pollId:string, files){
+    async createOption(option, collectionId: string, pollId:string, file){
         try {
-            const value = sanitizeString(option.value);
-            if(files){
-                // files.forEach(file => {
-                //     // Process and save the file
-                //     const filePath = `/uploads/${file.originalname}`; // Save the image
-                //     // Update the JSON structure with file paths
-                //     const [pollIndex, optionIndex] = file.fieldname.match(/\d+/g).map(Number);
-                //     option.image = filePath;
-                // });
-            }
 
-            await this.optionsTable.insert(
+
+
+            const value = sanitizeString(option.value);
+
+            const response = await this.optionsTable.insert(
                 [
                     'collection_id',
                     'poll_id',
@@ -255,6 +281,22 @@ export class AdminPolls {
                 ],
                 {returnColumn: 'id'}
             );
+
+            if(response && file) {
+
+                const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml'];
+                const fileMimeType = mime.lookup(file.originalname);
+                
+                const optionId = response['id'];
+
+                if (allowedMimeTypes.includes(fileMimeType)) {
+                    const fileName = `${optionId}.png`;
+                    const fDir = path.join(this.fileDir, 'option-images', fileName);
+
+                    await this.saveFile(file, fDir);
+                }
+            }
+
         }
         catch(error){
             console.error(error);

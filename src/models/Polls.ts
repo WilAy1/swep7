@@ -1,6 +1,9 @@
+import path from "path";
 import Query from "../db/query";
 import { Collection, CollectionExists, CollectionPoll, PollOption } from "../interface/polls.interface";
+import { checkEmailInCsv } from "../services/csv";
 import { isEmpty } from "../utils/utils";
+import fs from 'fs';
 
 export default class Polls {
     protected readonly table: Query;
@@ -8,6 +11,8 @@ export default class Polls {
     protected readonly optionsTable: Query;
 
     protected readonly collectionId: string;
+
+    private readonly fileDir: string;
     
     constructor(collectionId: string){
         this.table = new Query("collection");
@@ -15,6 +20,14 @@ export default class Polls {
         this.optionsTable = new Query("poll_options");
 
         this.collectionId = collectionId;
+
+        const currentDirectory = process.cwd();
+
+        const rootDir = currentDirectory.includes('/src')
+        ? path.resolve(currentDirectory, '../')
+        : currentDirectory;
+      
+        this.fileDir = `${rootDir}/uploads`;
     }
 
     async collectionExists() : Promise<CollectionExists> {
@@ -53,9 +66,9 @@ export default class Polls {
         const collection = await this.fetchCollectionData(true);
         if(!collection) return false;
 
-        const eligibleVoters = collection['eligible_voters'].split(',');
-        
-        return eligibleVoters.includes(emailAddress);
+        const isElgible = await checkEmailInCsv(emailAddress, collection['id']);
+
+        return isElgible;
     }
     
 
@@ -167,6 +180,16 @@ export default class Polls {
         });
 
         if(isEmpty(result)) return;
+
+        
+
+        for(const option of result){
+            const optionFilePath = path.join(this.fileDir, 'option-images', `${option['id']}.png`);
+            console.log(optionFilePath);
+            if (fs.existsSync(optionFilePath)) {
+                option['image_link'] = `localhost:3000/images/${option['id']}.png`
+            }
+        }
 
         return result as PollOption[];
     }

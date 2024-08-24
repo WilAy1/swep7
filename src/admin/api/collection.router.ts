@@ -1,5 +1,5 @@
 import express from 'express';
-import multer from 'multer';
+import multer, { Multer } from 'multer';
 import APIResponse from '../../interface/api.interface';
 import { isEmpty, isValidEmail } from '../../utils/utils';
 import { StatusCodes } from 'http-status-codes';
@@ -7,8 +7,21 @@ import jwt from 'jsonwebtoken';
 import { env } from '../../utils/env';
 import { AdminPolls } from '../../models/AdminPolls';
 import Polls from '../../models/polls';
+import { parse } from 'csv-parse/sync';
+import { isValidEmailFile } from '../../services/csv';
+import path from 'path';
 
-const upload = multer({ storage: multer.memoryStorage() });
+
+const currentDirectory = process.cwd();
+
+const rootDirectory = currentDirectory.includes('/src')
+  ? path.resolve(currentDirectory, '../')
+  : currentDirectory;
+
+
+const memoryStorage = multer.memoryStorage();
+const upload = multer({ storage: memoryStorage });
+
 
 export const collectionRouter = express.Router();
 
@@ -35,8 +48,8 @@ function validateCreateCollection(collection){
     if (!collection.title) errors.push('Title cannot be empty');
     if (!collection.start_time || !collection.end_time) errors.push('Datetime for starting or ending vote not provided');
     
-    if (!collection.eligible_voters) errors.push('Eligible voters not found');
-    else if (!areVotersValid(collection.eligible_voters)) errors.push('Not all email addresses are valid');
+    // if (!collection.eligible_voters) errors.push('Eligible voters not found');
+    // else if (!areVotersValid(collection.eligible_voters)) errors.push('Not all email addresses are valid');
     
     if (!collection.polls || !Array.isArray(collection.polls) || collection.polls.length === 0) {
         errors.push('Polls cannot be empty');
@@ -71,13 +84,50 @@ function validateCreateCollection(collection){
     return errors;
 }
 
+
 collectionRouter.post('/create', upload.any(), async (req, res) => {
     try{
-        const { collection } = req.body;
+        let { collection } = req.body;
+        
+        collection = JSON.parse(collection);
+
         const { adminId } = req['user'];
 
-        // check valid params
-        //const { title, start_time: startVoting, end_time: endVoting, eligible_voters, polls } = collection;
+        
+        const files = req.files as Express.Multer.File[];
+
+
+        let eligibleVotersFile = null; 
+        let numberOfEligibleVoters = 0;
+
+        if (Array.isArray(files)) {
+            eligibleVotersFile = files.find(file => file.fieldname === "collection.eligible_voters");
+        }
+
+
+
+        if(eligibleVotersFile){
+            const { isValid, emailCount } = await isValidEmailFile(eligibleVotersFile);
+            const response: APIResponse = {
+                success: false,
+                message: "Couldn't read email addresses from file",
+                data: {}
+            }
+
+
+            if(!isValid) return res.status(StatusCodes.BAD_REQUEST).json(response);
+
+            numberOfEligibleVoters = emailCount;
+        }
+        else {
+            const response: APIResponse = {
+                success: false,
+                message: "Couldn't find email addresses file",
+                data: {}
+            }
+
+            return res.status(StatusCodes.BAD_REQUEST).json(response);
+        }
 
 
         const collectionErrors = validateCreateCollection(collection);
@@ -87,7 +137,7 @@ collectionRouter.post('/create', upload.any(), async (req, res) => {
         
             const adminPolls = new AdminPolls(adminId);
 
-            const collectionId = await adminPolls.createCollection(collection, req.files);
+            const collectionId = await adminPolls.createCollection(collection, req.files, numberOfEligibleVoters);
 
             if(collectionId){
                 const polls = new Polls(collectionId);

@@ -2,7 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import { votersRouter } from './voters/router';
 import { adminRouter } from './admin/api/router';
-
+import './services/csv'
+import { fileRouter } from './files/router';
 
 
 const app = express();
@@ -13,6 +14,7 @@ app.use(express.json());
 
 app.use('/api/manage', adminRouter);
 app.use('/api/', votersRouter);
+app.use('/images', fileRouter);
 
   
 
