@@ -1,6 +1,7 @@
 import nodemailer from 'nodemailer';
 import { isValidEmail } from '../utils/utils';
 import { SentMessageInfo } from 'nodemailer/lib/smtp-transport';
+import { env } from '../utils/env';
 
 export default class Mail {
     readonly recipientEmail: string;
@@ -10,11 +11,12 @@ export default class Mail {
         if(!isValidEmail(recipientEmail)) throw new Error("Invalid recipient email address");
         this.recipientEmail = recipientEmail;
 
+
         this.transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
                 user: 'swepproject@gmail.com',   
-                pass: 'qggq yyxl fqiy ymzm'       
+                pass: String(env.MAIL_APP_PASSWORD)
             }
         });
     }

@@ -92,7 +92,10 @@ collection.get('/fetch-collection', async (req, res) => {
 
 collection.post('/submit-vote', async (req, res) => {
     try {
+        const { email, collectionId } = req['voter'];
         const { collection_id, votes } = req.body;
+
+        
         if(!collection_id || !votes) {
             const response : APIResponse = {
                 success: false,
@@ -101,13 +104,12 @@ collection.post('/submit-vote', async (req, res) => {
             }
             return res.status(StatusCodes.BAD_REQUEST).json(response);
         }
-        const { email, collectionId } = req['voter'];
         
         const polls = new Polls(collection_id);
         const isEligiible = await polls.isEligibleVoter(email);
         const { exists, reason } = await polls.collectionExists();
 
-        if(!isEligiible || !exists) {
+        if(!isEligiible || !exists || (collectionId != collection_id)) {
             const response : APIResponse = {
                 success: false,
                 message: "",
@@ -116,7 +118,7 @@ collection.post('/submit-vote', async (req, res) => {
             if(!exists){
                 response.message = reason;
             }
-            if(!isEligiible){
+            if(!isEligiible || (collectionId != collection_id)){
                 response.message = "You're not eligible to vote";
             }
 

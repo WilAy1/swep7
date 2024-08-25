@@ -1,2 +1,3 @@
 .env
-/src/admin/Polls/
+/src/admin/polls/
+/node_modules
