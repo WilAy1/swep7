@@ -22,6 +22,7 @@
     "@types/jsonwebtoken": "^9.0.6",
     "@types/multer": "^1.4.11",
     "@types/node": "^20.15.0",
+    "@types/nodemailer": "^6.4.15",
     "@types/uuid": "^9.0.8",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
@@ -32,6 +33,7 @@
     "typescript": "^5.5.4"
   },
   "dependencies": {
+    "@ngrok/ngrok": "^1.4.1",
     "@types/pg": "^8.11.6",
     "@types/pg-pool": "^2.0.6",
     "bcrypt": "^5.1.1",
@@ -45,6 +47,7 @@
     "jsonwebtoken": "^9.0.2",
     "mime-types": "^2.1.35",
     "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.9.14",
     "nodemon": "^3.1.4",
     "pg": "^8.12.0",
     "pg-pool": "^3.6.2",

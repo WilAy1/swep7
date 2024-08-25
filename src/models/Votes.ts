@@ -1,7 +1,7 @@
 import Query from "../db/query";
 import { VoteStruct } from "../interface/polls.interface";
 import { isEmpty } from "../utils/utils";
-import Polls from "./polls";
+import Polls from "./Polls";
 
 export class Votes extends Polls {
     protected readonly votesTable: Query;
@@ -109,12 +109,20 @@ export class Votes extends Polls {
             const votersDetails = await this.fetchVoterDetails();
             if(!votersDetails) return false; // shouldn't call
 
+
+            let allPollsVoted = true;
+
             for(const vote of votes){
                 const pollId = vote.poll_id;
                 const optionId = vote.option_id;
 
                 const pollDetails = await this.fetchPoll(pollId);
                 const optionDetails = await this.fetchOption({optionId: optionId, pollId: pollId});
+
+                if(!pollDetails || !optionDetails) {
+                    allPollsVoted = false;
+                    continue;
+                }
 
                 const userHasVoted = await this.voteExists({pollId: pollId});
                 vote.option_value = optionDetails['value'];
@@ -133,7 +141,7 @@ export class Votes extends Polls {
             // don't loop this, only updates once per voter
             await this.table.customQuery("UPDATE collection SET no_of_votes=no_of_votes+1 WHERE id=$1", [this.collectionId]);
 
-            return true;
+            return allPollsVoted;
         }
         catch(error){
             console.error(error);

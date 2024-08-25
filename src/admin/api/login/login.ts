@@ -7,6 +7,7 @@ import { env } from "process";
 import { AdminAccountState } from "../../../interface/admin.interface";
 import pool from "../../../db/connect";
 import { PoolClient } from "pg";
+import Mail from "../../../models/Mail";
 
 export default class AdminLogin {
     private readonly creatorsTable: Query;
@@ -176,6 +177,9 @@ export default class AdminLogin {
 
 
             // sendmail
+
+            const mail = new Mail(email);
+            await mail.sendCreatorsCode(verificationCode);
 
             return {
                 success: true,

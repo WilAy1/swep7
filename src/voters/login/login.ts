@@ -4,8 +4,9 @@ import { createRandomCode, isEmpty, isValidEmail } from '../../utils/utils';
 import APIResponse from '../../interface/api.interface';
 import { env } from '../../utils/env';
 import jwt from 'jsonwebtoken';
-import Polls from '../../models/polls';
+import Polls from '../../models/Polls';
 import { Votes } from '../../models/Votes';
+import Mail from '../../models/Mail';
 
 interface LoginParam {
     email: string,
@@ -152,7 +153,10 @@ export class Login {
                 );
             }
 
-            // sendMain(code);
+            const mail = new Mail(this.email);
+            await mail.sendVotersCode(code, collectionDetails['title']);
+
+            // sendMail(code);
 
             const response: APIResponse = {
                 success: true,
@@ -247,10 +251,6 @@ export class Login {
         catch(error){
             throw new Error(error);
         }
-
-    }
-
-    sendMail(){
 
     }
 }

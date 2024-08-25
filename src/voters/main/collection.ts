@@ -2,7 +2,7 @@ import express from 'express';
 import { StatusCodes } from 'http-status-codes';
 import APIResponse from '../../interface/api.interface';
 import { isEmpty } from '../../utils/utils';
-import Polls from '../../models/polls';
+import Polls from '../../models/Polls';
 import { isValidVoteStruct } from '../../interface/polls.interface';
 import { Votes } from '../../models/Votes';
 
@@ -135,12 +135,36 @@ collection.post('/submit-vote', async (req, res) => {
             }
 
             const voteClass = new Votes(collection_id, { emailAddress: email });
-            await voteClass.vote(votes);
+            const hasVoterVoted = await voteClass.votedInCollection();
 
-            const response: APIResponse = {
-                success: true,
-                message: "successfully voted",
-                data: {}
+            if(hasVoterVoted){
+                const response: APIResponse = {
+                    success: false,
+                    message: "Voting failed. You have already voted.",
+                    data: {}
+                }
+
+                return res.status(StatusCodes.FORBIDDEN).json(response);;
+            }
+
+            const voteResult = await voteClass.vote(votes);
+
+
+            let response: APIResponse;
+
+            if(!voteResult) {
+                response = {
+                    success: true,
+                    message: "Successfully voted. Some votes were not casted.",
+                    data: {}
+                }
+            }
+            else {
+                response = {
+                    success: true,
+                    message: "Successfully voted",
+                    data: {}
+                }
             }
             return res.status(StatusCodes.OK).json(response);
             
