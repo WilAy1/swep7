@@ -65,7 +65,7 @@ CREATE TABLE creators (
     is_verified BOOL NOT NULL DEFAULT FALSE,
     verification_time TIMESTAMP,
     status VARCHAR(16) DEFAULT 'inactive' CHECK (status IN ('active', 'inactive')), -- Enum-like check for active and inactive
-    verification_code INT NOT NULL, -- INT doesn't take a length parameter in PostgreSQL
+    verification_code INT NOT NULL, 
     code_expires TIMESTAMP,
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     last_login TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
