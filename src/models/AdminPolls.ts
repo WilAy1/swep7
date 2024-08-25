@@ -285,7 +285,7 @@ export class AdminPolls {
             if(response && file) {
 
                 const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml'];
-                const fileMimeType = mime.lookup(file.originalname);
+                const fileMimeType = mime.lookup(file.originalname).toString();
                 
                 const optionId = response['id'];
 
