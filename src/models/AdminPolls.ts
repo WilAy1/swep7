@@ -1,7 +1,7 @@
 import { Stream } from "stream";
 import Query from "../db/query";
 import { isEmpty, sanitizeString, uniqueList } from "../utils/utils";
-import Polls from "./polls";
+import Polls from "./Polls";
 import fs from 'fs';
 import { writeFile } from 'fs/promises';
 import path from "path";

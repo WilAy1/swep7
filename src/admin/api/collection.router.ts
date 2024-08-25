@@ -6,7 +6,7 @@ import { StatusCodes } from 'http-status-codes';
 import jwt from 'jsonwebtoken';
 import { env } from '../../utils/env';
 import { AdminPolls } from '../../models/AdminPolls';
-import Polls from '../../models/polls';
+import Polls from '../../models/Polls';
 import { parse } from 'csv-parse/sync';
 import { isValidEmailFile } from '../../services/csv';
 import path from 'path';
