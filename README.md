@@ -324,11 +324,11 @@ Content-Type: application/json
 
 **Parameters:** 
 - `email` (string, required)
-- `code` (string|number, required, >=8 characters)
+- `code` (string|number, count = 6)
 
 **Example Request:**
 ```http
-POST /api/manage/account/login
+POST /api/manage/account/verify
 Content-Type: application/json
 
 {

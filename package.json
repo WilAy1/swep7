@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "@ngrok/ngrok": "^1.4.1",
-    "@types/mime": "^4.0.0",
+    "@types/mime": "^3.0.4",
     "@types/pg": "^8.11.6",
     "@types/pg-pool": "^2.0.6",
     "bcrypt": "^5.1.1",
