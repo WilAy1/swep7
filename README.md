@@ -507,11 +507,11 @@ const collectionData = {
             required: true,
             options: [
                 {
-                    title: "Option 1",
+                    value: "Option 1",
                     image: fileInput1.files[0]  // fileInput1 is an input of type file
                 },
                 {
-                    title: "Option 2"
+                    value: "Option 2"
                     // no image for this option
                 }
             ]
