@@ -67,11 +67,11 @@ Content-Type: application/json
 
 **Parameters:** 
 - `email` (string, required)
-- `code` (string|number, required, >=8 characters)
+- `code` (string|number, count = 6)
 
 **Example Request:**
 ```http
-POST /api/manage/account/login
+POST /api/manage/account/verify
 Content-Type: application/json
 
 {
@@ -98,7 +98,7 @@ Content-Type: application/json
   - `title` (string, required): The title of the collection.
   - `start_time` (ISO 8601 string, required): The start time of the election.
   - `end_time` (ISO 8601 string, required): The end time of the election.
-  - `eligible_voters` (string, required): Comma-separated list of email addresses of eligible voters.
+  - `eligible_voters` (file, required): File type is csv.
   - `polls` (array, required): An array of polls.
     - `polls[].title` (string, required): The title of the poll.
     - `polls[].required` (boolean, required): Indicates if the poll is required.
@@ -106,11 +106,23 @@ Content-Type: application/json
       - `options[].value` (string, required): The value of an option.
       - `options[].image` (image, optional): Image for an option.
 
+**Example CSV file:**
+
+|Email
+|-----
+|example@gmail.com
+|exampl2@gmail.com
+|example3@gmail.com
+|example4@gmail.com
+|exampl5@gmail.com
+|exampl6@gmail.com
+|exampl7@gmail.com
+|example8@gmail.com
+|...
 
 **Example Request:** 
 ```http
 POST /api/manage/collection/create
-Content-Type: multipart/form-data
 ```
 
 **Example Response:** 
@@ -149,7 +161,8 @@ Content-Type: multipart/form-data
                         "creator_id": "550e8400-e29b-41d4-a716-446655440000",
                         "value": "DrBush",
                         "no_of_votes": 0,
-                        "created": "2024-08-19T19:39:18.742Z"
+                        "created": "2024-08-19T19:39:18.742Z",
+                        "image_link": "localhost:3000/images/9a628d5c-8bcd-41da-b98e-acb601da9e8a.png"
                     },
                     {
                         "id": "580bfeaf-4541-4534-b38a-f4756d62de0d",
@@ -230,18 +243,18 @@ const collectionData = {
     title: "Example Collection",
     start_time: "2024-08-19T12:00:00Z",
     end_time: "2024-08-26T12:00:00Z",
-    eligible_voters: "example@gmail.com,example1@gmail.com",
+    eligible_voters: "",
     polls: [
         {
             title: "Poll 1",
             required: true,
             options: [
                 {
-                    title: "Option 1",
+                    value: "Option 1",
                     image: fileInput1.files[0]  // fileInput1 is an input of type file
                 },
                 {
-                    title: "Option 2"
+                    value: "Option 2"
                     // no image for this option
                 }
             ]
@@ -252,11 +265,13 @@ const collectionData = {
 const formData = new FormData(); // create new formdata
 formData.append("collection", JSON.stringify(collectionData)); // add collection to formdata
 
+formData.append("collection.eligible_voters", eligibleVotersFile);
+
 // Attach images separately if they exist
 collectionData.polls.forEach((poll, pollIndex) => {
     poll.options.forEach((option, optionIndex) => {
         if (option.image) {
-            formData.append(`polls[${pollIndex}].options[${optionIndex}].image`, option.image);
+            formData.append(`collection.polls[${pollIndex}].options[${optionIndex}].image`, option.image);
         }
     });
 });
@@ -416,3 +431,4 @@ Accept: application/json
     }
 }
 ```
+
