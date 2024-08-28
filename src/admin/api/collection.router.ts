@@ -37,7 +37,7 @@ function areVotersValid(voters: string): boolean {
 
 function arePollsValid(collection){
     return !isEmpty(collection.polls) && collection.polls.every(poll => 
-        poll.title && poll.options.length >= 2 && poll.options.every(option => option.value && !isEmpty(option.value))
+        poll.title && poll.options.length >= 1 && poll.options.every(option => option.value && !isEmpty(option.value))
     );
     
 }
@@ -55,7 +55,7 @@ function validateCreateCollection(collection){
         errors.push('Polls cannot be empty');
     } else {
         collection.polls.forEach(poll => {
-            if (!poll.title || !poll.options || poll.options.length < 2) {
+            if (!poll.title || !poll.options || poll.options.length < 1) {
                 errors.push('Invalid poll data');
             }
             poll.options.forEach(option => {
