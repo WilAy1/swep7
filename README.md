@@ -380,7 +380,6 @@ Content-Type: application/json
 **Example Request:** 
 ```http
 POST /api/manage/collection/create
-Content-Type: multipart/form-data
 ```
 
 **Example Response:** 
@@ -529,7 +528,7 @@ formData.append("collection.eligible_voters", eligibleVotersFile);
 collectionData.polls.forEach((poll, pollIndex) => {
     poll.options.forEach((option, optionIndex) => {
         if (option.image) {
-            formData.append(`polls[${pollIndex}].options[${optionIndex}].image`, option.image);
+            formData.append(`collection.polls[${pollIndex}].options[${optionIndex}].image`, option.image);
         }
     });
 });
