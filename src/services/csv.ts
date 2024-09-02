@@ -69,12 +69,24 @@ export async function checkEmailInCsv(emailAddress: string, inCollection:string)
         });
     
 
-        const emails : Array<any> = records.map(record => record['Email']).filter(Boolean);
-
+        const emails : Array<any> = records.map(record => getValueCaseInsensitive(record, 'email')).filter(Boolean);
+        
         return emails.includes(emailAddress);
     }
     catch(error) {
         console.error('Error reading or parsing file', error);
         return false;
     }
+}
+
+function getValueCaseInsensitive(obj: Object, key: String) {
+  const lowerCaseKey = key.toLowerCase();
+
+  for (const k in obj) {
+    if (obj.hasOwnProperty(k) && k.toLowerCase() === lowerCaseKey) {
+      return obj[k];
+    }
+  }
+  
+  return undefined;
 }

@@ -1,36 +1,26 @@
-import path from "path";
-import Query from "../db/query";
-import { Collection, CollectionExists, CollectionPoll, PollOption } from "../interface/polls.interface";
-import { checkEmailInCsv } from "../services/csv";
-import { isEmpty } from "../utils/utils";
-import fs from 'fs';
-
-export default class Polls {
-    protected readonly table: Query;
-    protected readonly pollsTable: Query;
-    protected readonly optionsTable: Query;
-
-    protected readonly collectionId: string;
-
-    private readonly fileDir: string;
-    
-    constructor(collectionId: string){
-        this.table = new Query("collection");
-        this.pollsTable = new Query("polls")
-        this.optionsTable = new Query("poll_options");
-
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const path_1 = __importDefault(require("path"));
+const query_1 = __importDefault(require("../db/query"));
+const csv_1 = require("../services/csv");
+const utils_1 = require("../utils/utils");
+const fs_1 = __importDefault(require("fs"));
+class Polls {
+    constructor(collectionId) {
+        this.table = new query_1.default("collection");
+        this.pollsTable = new query_1.default("polls");
+        this.optionsTable = new query_1.default("poll_options");
         this.collectionId = collectionId;
-
         const currentDirectory = process.cwd();
-
         const rootDir = currentDirectory.includes('/src')
-        ? path.resolve(currentDirectory, '../')
-        : currentDirectory;
-      
+            ? path_1.default.resolve(currentDirectory, '../')
+            : currentDirectory;
         this.fileDir = `${rootDir}/uploads`;
     }
-
-    async collectionExists() : Promise<CollectionExists> {
+    async collectionExists() {
         const result = await this.table.select({
             conditions: {
                 compulsory: [
@@ -41,39 +31,29 @@ export default class Polls {
                 ]
             }
         });
-
-        if(isEmpty(result)) return { exists: false, reason: "Collection doesn't exist" }; // collection doesn't exist
-
+        if ((0, utils_1.isEmpty)(result))
+            return { exists: false, reason: "Collection doesn't exist" }; // collection doesn't exist
         const collection = result[0];
-
         const start_time = new Date(collection['start_time']);
         const end_time = new Date(collection['end_time']);
         const current_time = new Date();
-
-        if(current_time >= start_time && current_time < end_time) {
-            return { exists: true }; 
+        if (current_time >= start_time && current_time < end_time) {
+            return { exists: true };
         }
-        else if(current_time < start_time){
-            return {exists: false, reason: "Voting hasn't started"}
+        else if (current_time < start_time) {
+            return { exists: false, reason: "Voting hasn't started" };
         }
-        
         return { exists: false, reason: "Voting has ended" };
-        
     }
-
-
-    async isEligibleVoter(emailAddress: string) : Promise<boolean> {
+    async isEligibleVoter(emailAddress) {
         const collection = await this.fetchCollectionData(true);
-        if(!collection) return false;
-
-        const isElgible = await checkEmailInCsv(emailAddress, collection['id']);
-
+        if (!collection)
+            return false;
+        const isElgible = await (0, csv_1.checkEmailInCsv)(emailAddress, collection['id']);
         return isElgible;
     }
-    
-
-    async fetchCollectionData(isAdmin = false){
-        const cols = isAdmin ? null : ['id', 'title', 'start_time', 'end_time', 'no_of_polls', 'created']
+    async fetchCollectionData(isAdmin = false) {
+        const cols = isAdmin ? null : ['id', 'title', 'start_time', 'end_time', 'no_of_polls', 'created'];
         const result = await this.table.select({
             cols: cols,
             conditions: {
@@ -85,39 +65,29 @@ export default class Polls {
                 ]
             }
         });
-
-        if(isEmpty(result)) return;
-
+        if ((0, utils_1.isEmpty)(result))
+            return;
         return result[0];
     }
-
-    async fetchCollection(isAdmin = false){
-
+    async fetchCollection(isAdmin = false) {
         const collection = await this.fetchCollectionData(isAdmin);
-
-        if(collection){
+        if (collection) {
             const polls = await this.fetchPolls(isAdmin);
-            if(polls){
-                for(const poll of polls){
+            if (polls) {
+                for (const poll of polls) {
                     const options = await this.fetchOptions(poll['id'], isAdmin);
                     poll['options'] = options || []; // add empty list if poll is undefined
                 }
             }
-
-
-            collection['polls'] = polls as CollectionPoll[];
-
-            return collection as Collection;
+            collection['polls'] = polls;
+            return collection;
         }
-
         return;
-
     }
-
-    async fetchPolls(isAdmin = false){
+    async fetchPolls(isAdmin = false) {
         const cols = ['id', 'title', 'required', 'no_of_options', 'created'];
-        if(isAdmin){
-            cols.push('no_of_votes', 'last_updated')
+        if (isAdmin) {
+            cols.push('no_of_votes', 'last_updated');
         }
         const result = await this.pollsTable.select({
             cols: cols,
@@ -130,13 +100,11 @@ export default class Polls {
                 ]
             }
         });
-
-        if(isEmpty(result)) return;
-
+        if ((0, utils_1.isEmpty)(result))
+            return;
         return result;
     }
-
-    async fetchPoll(pollId: string){
+    async fetchPoll(pollId) {
         const result = await this.pollsTable.select({
             conditions: {
                 compulsory: [
@@ -151,17 +119,14 @@ export default class Polls {
                 ]
             }
         });
-
-        if(isEmpty(result)) return;
-
+        if ((0, utils_1.isEmpty)(result))
+            return;
         return result[0];
     }
-
-
-    async fetchOptions(pollId: string, isAdmin = false){
+    async fetchOptions(pollId, isAdmin = false) {
         const cols = ['id', 'value', 'created'];
-        if(isAdmin){
-            cols.push('no_of_votes')
+        if (isAdmin) {
+            cols.push('no_of_votes');
         }
         const result = await this.optionsTable.select({
             cols: cols,
@@ -178,22 +143,17 @@ export default class Polls {
                 ]
             }
         });
-
-        if(isEmpty(result)) return;
-
-        
-
-        for(const option of result){
-            const optionFilePath = path.join(this.fileDir, 'option-images', `${option['id']}.png`);
-            if (fs.existsSync(optionFilePath)) {
-                option['image_link'] = `localhost:3000/images/${option['id']}.png`
+        if ((0, utils_1.isEmpty)(result))
+            return;
+        for (const option of result) {
+            const optionFilePath = path_1.default.join(this.fileDir, 'option-images', `${option['id']}.png`);
+            if (fs_1.default.existsSync(optionFilePath)) {
+                option['image_link'] = `localhost:3000/images/${option['id']}.png`;
             }
         }
-
-        return result as PollOption[];
+        return result;
     }
-
-    async fetchOption({optionId, pollId}: {optionId: string, pollId: string}){
+    async fetchOption({ optionId, pollId }) {
         const result = await this.optionsTable.select({
             conditions: {
                 compulsory: [
@@ -212,9 +172,10 @@ export default class Polls {
                 ]
             }
         });
-
-        if(isEmpty(result)) return;
-
+        if ((0, utils_1.isEmpty)(result))
+            return;
         return result[0];
     }
 }
+exports.default = Polls;
+//# sourceMappingURL=Polls.js.map

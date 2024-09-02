@@ -66,10 +66,15 @@ function validateCreateCollection(collection){
 
     const startDate = new Date(collection.start_time);
     const endDate = new Date(collection.end_time);
+    const currentDate = new Date();
 
     if(endDate.getTime() - startDate.getTime() <= 0){
-        errors.push('Voting cannot end before or the same time it starts.');
+        errors.push('Voting cannot end before (or the same time) it starts.');
     } 
+
+    if(endDate.getTime() < currentDate.getTime() || startDate.getTime() < currentDate.getTime()){
+        errors.push('Start and end date/time should be in the future and cannot be in the past.')
+    }
     
     if(isEmpty(collection.polls)){
         errors.push('Polls cannot be empty');

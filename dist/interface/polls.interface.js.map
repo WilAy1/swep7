@@ -1,0 +1,1 @@
+{"version":3,"file":"polls.interface.js","sourceRoot":"","sources":["../../src/interface/polls.interface.ts"],"names":[],"mappings":";;AA8C+E,8CAAiB;AAVhG,SAAS,iBAAiB,CAAC,IAAS;IAChC,OAAO,CACH,IAAI,KAAK,IAAI;QACb,OAAO,IAAI,KAAK,QAAQ;QACxB,OAAO,IAAI,CAAC,OAAO,KAAK,QAAQ;QAChC,OAAO,IAAI,CAAC,YAAY,KAAK,QAAQ;QACrC,OAAO,IAAI,CAAC,SAAS,KAAK,QAAQ,CACrC,CAAC;AACN,CAAC"}
