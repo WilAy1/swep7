@@ -4,4 +4,4 @@
 /uploads/csv/*
 /uploads/option-images/*
 .history
-/dist
+dist
