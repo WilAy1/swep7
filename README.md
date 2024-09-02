@@ -143,11 +143,12 @@ Accept: application/json
 
 ***Description:** This endpoint fetches the collection details including polls and options. This endpoint requires authentication.
 
-**Parameters:** None
+**Parameters:** 
+- `collection_id` (UUID, required): The ID of the collection we're fetching.
 
 **Example Request:**
 ```http
-POST /api/voters/fetch-collection
+GET /api/voters/fetch-collection?collection_id=b84fca04-a633-4c91-9835-dac5f30c331c
 ```
 
 **Example Response:** 
