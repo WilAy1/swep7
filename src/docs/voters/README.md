@@ -92,11 +92,13 @@ Accept: application/json
 
 ***Description:** This endpoint fetches the collection details including polls and options. This endpoint requires authentication.
 
-**Parameters:** None
+**Parameters:**
+- `collection_id` (UUID, required): The ID of the collection we're checking if it exists.
 
 **Example Request:**
 ```http
-POST /api/voters/fetch-collection
+GET /api/voters/collection-exists?collection_id=53490bce-3b70-4d06-afb1-e75c6f725110
+Accept: application/json
 ```
 
 **Example Response:** 
