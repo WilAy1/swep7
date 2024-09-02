@@ -46,6 +46,16 @@ collection.get('/fetch-collection', async (req, res) => {
     try {
         const { collection_id } = req.query;
         
+        if(!collection_id){
+            const response = {
+                status: false,
+                message: "Invalid collection_id",
+                data: {}
+            }
+
+            return res.status(StatusCodes.BAD_REQUEST).json(response);
+        }
+
         const { email, collectionId } = req['voter'];
 
         const polls = new Polls(collection_id.toString());

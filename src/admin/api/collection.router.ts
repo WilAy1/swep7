@@ -93,6 +93,15 @@ function validateCreateCollection(collection){
 collectionRouter.post('/create', upload.any(), async (req, res) => {
     try{
         let { collection } = req.body;
+
+        if(!collection){
+            const  response : APIResponse = {
+            success: false,
+            message: "Collection not found",
+            data: {}
+        }
+            return res.status(StatusCodes.BAD_REQUEST).json(response);
+        }
         
         collection = JSON.parse(collection);
 
@@ -159,9 +168,7 @@ collectionRouter.post('/create', upload.any(), async (req, res) => {
             }
         }
 
-        const  response : APIResponse 
-        
-        = {
+        const  response : APIResponse = {
             success: false,
             message: "Failed to create collection",
             data: {
