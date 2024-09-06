@@ -5,6 +5,7 @@ import { isEmpty } from '../../utils/utils';
 import Polls from '../../models/Polls';
 import { isValidVoteStruct } from '../../interface/polls.interface';
 import { Votes } from '../../models/Votes';
+import { removeKeys } from '../../utils/removeKeys';
 
 export const collection = express.Router();
 
@@ -182,26 +183,56 @@ collection.post('/submit-vote', async (req, res) => {
             
         }
 
-        /**
-         * body fotmat
-         * {
-         *  collection_id: string,
-         *  votes: [
-         *      {
-         *          poll_id: "p_id",
-         *          option_value: "",
-         *          option_id: "o_id"
-         *      },
-         *      {
-         *          poll_id: "p_id",
-         *          option_value: "",
-         *          option_id: "o_id"
-         *      }, 
-         *  ]
-         * }
-         */
     }
     catch {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ status: false, message: "Intenal server error", data: {} });
     }
+});
+
+collection.get('/result', async (req, res) => {
+    try {
+        const { collection_id } = req.query;
+        if(!collection_id){
+            const response : APIResponse = {
+                success: false,
+                message: "Invalid Collection ID",
+                data: {}
+            }
+            res.status(StatusCodes.BAD_REQUEST).json(response);
+        }
+
+        const polls = new Polls(collection_id.toString());
+
+        const {exists, reason} = await polls.collectionExists();
+
+        let success: boolean;
+        let collectionData;
+        let message: string;
+
+        if(!exists && reason == "Voting has ended"){
+            success = true;
+            const data = await polls.fetchCollection(true);
+            collectionData = removeKeys(data, ["creator_id", "eligible_voters", "no_of_eligible_voters", "created", "last_updated", "polls[].last_updated", "polls[].created", "polls[].required", "polls[].options[].created"]);
+            message = "success";
+        }
+        else {
+            success = false;
+            collectionData = {},
+            message = "Results aren't available for this election."
+        }
+
+
+        const response : APIResponse = {
+            success: success,
+            message: message,
+            data: collectionData
+        }
+
+        return res.status(StatusCodes.OK).json(response);
+    }
+    catch (error){
+        console.error(error);
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ status: false, message: "Intenal server error", data: {} });
+    }
+
 });

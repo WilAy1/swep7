@@ -33,7 +33,7 @@ export function excludeFromAuth(paths: string[]) {
       // Check if the request path matches any of the excluded paths
       if (paths.includes(req.path)) {
           // If the path is in the exclusion list, skip authentication and call next()
-          console.log(`Skipping authentication for path: ${req.path}`);
+          //console.log(`Skipping authentication for path: ${req.path}`);
           next();
       } else {
           // If the path is not in the exclusion list, proceed with authentication
