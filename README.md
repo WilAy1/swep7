@@ -264,7 +264,7 @@ POST /api/voters/submit-vote
 
 **Example Request:**
 ```http
-GET /api/voters/result?collection_id=b84fca04-a633-4c91-9835-dac5f30c331c
+GET /api/voters/result?collection_id=cc545185-5ae7-4662-aa22-e50a8f2716a2
 Accept: application/json
 ```
 
