@@ -75,7 +75,7 @@ adminLoginRouter.post('/register', async (req, res) => {
                 statusCode = StatusCodes.OK;
                 break;
             case false:
-                statusCode = StatusCodes.BAD_GATEWAY;
+                statusCode = StatusCodes.FORBIDDEN;
                 break;
             default:
                 statusCode = StatusCodes.NOT_FOUND;

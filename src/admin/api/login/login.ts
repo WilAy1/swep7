@@ -49,8 +49,39 @@ export default class AdminLogin {
         switch (result[0]['status']) {
             case AdminAccountState.DISABLED:
                 if(!result[0]['is_verified']){
+                    const currentTime = new Date();
+
+                    const expiryTime = new Date(currentTime.getTime() + (2 * 60 * 60 * 1000));
+
+                    const expiryTimeString = expiryTime.toISOString();
+
+                    const verificationCode = createRandomCode();
+
+
+                    this.creatorsTable.update(
+                        [
+                            "verification_code",
+                            "code_expires"
+                        ],
+                        [
+                            verificationCode,
+                            expiryTimeString
+                        ],
+                        {
+                            compulsory: [
+                                {
+                                    key: "email",
+                                    value: email
+                                }
+                            ]
+                        }
+                    );
+
+                    const mail = new Mail(email);
+                    await mail.sendCreatorsCode(verificationCode);
+
                     return {
-                        message: "Account isn't verified",
+                        message: "Account isn't verified. Check emaiil for verification code.",
                         success: false,
                         data: {}
                     }
@@ -153,7 +184,7 @@ export default class AdminLogin {
             // Format the expiry time as a string in ISO 8601 format (Timestamp with time zone)
             const expiryTimeString = expiryTime.toISOString();
 
-            console.log(currentTime.toISOString(), expiryTimeString);
+            //console.log(currentTime.toISOString(), expiryTimeString);
 
             const verificationCode = createRandomCode();
 

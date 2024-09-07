@@ -6,6 +6,7 @@ import fs from 'fs';
 import { writeFile } from 'fs/promises';
 import path from "path";
 import mime from 'mime-types';
+import { generateCSV } from "../services/csv";
 
 export class AdminPolls {
     private readonly adminId: string;
@@ -95,9 +96,9 @@ export class AdminPolls {
         }
     }
 
-    async saveFile(file: { buffer: string | NodeJS.ArrayBufferView | Iterable<string | NodeJS.ArrayBufferView> | AsyncIterable<string | NodeJS.ArrayBufferView> | Stream; }, filePath: fs.PathLike | fs.promises.FileHandle) {
+    async saveFile(file: string, filePath: fs.PathLike | fs.promises.FileHandle) {
         try {
-            await writeFile(filePath, file.buffer);
+            await writeFile(filePath, file);
         }
         catch(error){
             console.error(error);
@@ -105,10 +106,10 @@ export class AdminPolls {
         }
     }
 
-    async createCollection(collection, files, noOfVoters){
+    async createCollection(collection, files, emailAddresses){
 
         try {
-            const eligibleVotersFile = files.find(file => file.fieldname === "collection.eligible_voters");
+            //const eligibleVotersFile = files.find(file => file.fieldname === "collection.eligible_voters");
 
 
             const creatorResult = await this.creatorTable.select({
@@ -155,7 +156,7 @@ export class AdminPolls {
                         startAt,
                         endAt,
                         "",
-                        noOfVoters,
+                        emailAddresses.length,
                         noOfPolls,
                         0
                     ],
@@ -166,16 +167,21 @@ export class AdminPolls {
                 if(insertResponse){
                     const collectionId = insertResponse['id'];
 
-                    const fileName = `${collectionId}${path.extname(eligibleVotersFile.originalname)}`;
-                    const fDir = path.join(this.fileDir, 'csv', fileName);
+                    const eligibleVotersFile = await generateCSV(emailAddresses);
+                    if(eligibleVotersFile){
 
-                    await this.saveFile(eligibleVotersFile, fDir);
+                        const fileName = `${collectionId}.csv`;
+                        const fDir = path.join(this.fileDir, 'csv', fileName);
+                        
+                        await this.saveFile(eligibleVotersFile as string, fDir);
 
-                    for(const [ key, poll ] of polls.entries()){
-                        await this.createPoll({index: key, poll: poll}, collectionId, files);
+                        for(const [ key, poll ] of polls.entries()){
+                            await this.createPoll({index: key, poll: poll}, collectionId, files);
+                        }
+
+                        return collectionId;
                     }
-
-                    return collectionId;
+                    return false;
                 }
             }
 
@@ -293,7 +299,7 @@ export class AdminPolls {
                     const fileName = `${optionId}.png`;
                     const fDir = path.join(this.fileDir, 'option-images', fileName);
 
-                    await this.saveFile(file, fDir);
+                    await this.saveFile(file.buffer, fDir);
                 }
             }
 

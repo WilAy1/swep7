@@ -112,7 +112,7 @@ collectionRouter.post('/create', upload.any(), async (req, res) => {
 
 
         let eligibleVotersFile = null; 
-        let numberOfEligibleVoters = 0;
+        let emailAddresses: string[];
 
         if (Array.isArray(files)) {
             eligibleVotersFile = files.find(file => file.fieldname === "collection.eligible_voters");
@@ -121,7 +121,7 @@ collectionRouter.post('/create', upload.any(), async (req, res) => {
 
 
         if(eligibleVotersFile){
-            const { isValid, emailCount } = await isValidEmailFile(eligibleVotersFile);
+            const { isValid, emailAddresses: addresses } = await isValidEmailFile(eligibleVotersFile);
             const response: APIResponse = {
                 success: false,
                 message: "Couldn't read email addresses from file",
@@ -131,7 +131,8 @@ collectionRouter.post('/create', upload.any(), async (req, res) => {
 
             if(!isValid) return res.status(StatusCodes.BAD_REQUEST).json(response);
 
-            numberOfEligibleVoters = emailCount;
+            emailAddresses = addresses;
+
         }
         else {
             const response: APIResponse = {
@@ -151,7 +152,7 @@ collectionRouter.post('/create', upload.any(), async (req, res) => {
         
             const adminPolls = new AdminPolls(adminId);
 
-            const collectionId = await adminPolls.createCollection(collection, req.files, numberOfEligibleVoters);
+            const collectionId = await adminPolls.createCollection(collection, req.files, emailAddresses);
 
             if(collectionId){
                 const polls = new Polls(collectionId);
