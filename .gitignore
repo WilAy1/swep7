@@ -1,7 +1,7 @@
 .env
 /src/admin/polls/
 /node_modules
-/uploads/csv/*
-/uploads/option-images/*
+/uploads/csv/
+/uploads/option-images/
 .history
 dist
