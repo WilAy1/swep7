@@ -186,7 +186,7 @@ export default class Polls {
         for(const option of result){
             const optionFilePath = path.join(this.fileDir, 'option-images', `${option['id']}.png`);
             if (fs.existsSync(optionFilePath)) {
-                option['image_link'] = `localhost:3000/images/${option['id']}.png`
+                option['image_link'] = `/images/${option['id']}.png`
             }
         }
 
