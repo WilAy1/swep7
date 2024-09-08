@@ -118,8 +118,6 @@ collectionRouter.post('/create', upload.any(), async (req, res) => {
             eligibleVotersFile = files.find(file => file.fieldname === "collection.eligible_voters");
         }
 
-        console.log("reached here 1");
-
 
 
         if(eligibleVotersFile){
@@ -154,11 +152,7 @@ collectionRouter.post('/create', upload.any(), async (req, res) => {
         
             const adminPolls = new AdminPolls(adminId);
 
-            console.log(adminId);
-
             const collectionId = await adminPolls.createCollection(collection, req.files, emailAddresses);
-
-            console.log("collection id", collectionId);
 
             if(collectionId){
                 const polls = new Polls(collectionId);

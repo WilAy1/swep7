@@ -111,7 +111,6 @@ export class AdminPolls {
         try {
             //const eligibleVotersFile = files.find(file => file.fieldname === "collection.eligible_voters");
 
-            console.log("id: ", this.adminId);
 
             const creatorResult = await this.creatorTable.select({
                 cols: ["id"],
