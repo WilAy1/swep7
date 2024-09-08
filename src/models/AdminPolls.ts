@@ -137,6 +137,8 @@ export class AdminPolls {
                 const collectionTitle = sanitizeString(title);
                 const noOfPolls = polls.length;
                 
+
+                console.log("reached here")
                 // create collection
                 
                 const insertResponse = await this.collectionTable.insert(
@@ -162,6 +164,8 @@ export class AdminPolls {
                     ],
                     {returnColumn: 'id'}
                 );
+
+                console.log(insertResponse);
 
             
                 if(insertResponse){
