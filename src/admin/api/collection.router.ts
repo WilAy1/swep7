@@ -91,6 +91,7 @@ function validateCreateCollection(collection){
 
 
 collectionRouter.post('/create', upload.any(), async (req, res) => {
+    console.log("a");
     try{
         let { collection } = req.body;
 
