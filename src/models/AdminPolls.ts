@@ -124,6 +124,8 @@ export class AdminPolls {
                 }
             });
 
+            console.log("result: ", creatorResult)
+
             if(!isEmpty(creatorResult)){
 
                 const { title, start_time: startVoting, end_time: endVoting, eligible_voters, polls } = collection;
@@ -189,9 +191,12 @@ export class AdminPolls {
                 }
             }
 
+            console.log("reached here 2")
+
             return false;
         }
         catch(error){
+            console.log(error);
             console.error(error);
             throw new Error(error);
         }
