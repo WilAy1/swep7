@@ -111,6 +111,7 @@ export class AdminPolls {
         try {
             //const eligibleVotersFile = files.find(file => file.fieldname === "collection.eligible_voters");
 
+            console.log("id: ", this.adminId);
 
             const creatorResult = await this.creatorTable.select({
                 cols: ["id"],
@@ -123,8 +124,6 @@ export class AdminPolls {
                     ]
                 }
             });
-
-            console.log("result: ", creatorResult)
 
             if(!isEmpty(creatorResult)){
 
@@ -139,8 +138,6 @@ export class AdminPolls {
                 const collectionTitle = sanitizeString(title);
                 const noOfPolls = polls.length;
                 
-
-                console.log("reached here")
                 // create collection
                 
                 const insertResponse = await this.collectionTable.insert(
@@ -167,8 +164,6 @@ export class AdminPolls {
                     {returnColumn: 'id'}
                 );
 
-                console.log(insertResponse);
-
             
                 if(insertResponse){
                     const collectionId = insertResponse['id'];
@@ -191,12 +186,9 @@ export class AdminPolls {
                 }
             }
 
-            console.log("reached here 2")
-
             return false;
         }
         catch(error){
-            console.log(error);
             console.error(error);
             throw new Error(error);
         }
