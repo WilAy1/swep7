@@ -8,7 +8,6 @@ const pool = new Pool({
   port: parseInt(env.DB_PORT as string, 10), // Default PostgreSQL port
   database: env.DB_NAME,
   password: env.DB_PASS,
-  ssl: true
 });
 
 export default pool;
