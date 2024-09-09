@@ -48,6 +48,8 @@ export default class Polls {
 
         const start_time = new Date(collection['start_time']);
         const end_time = new Date(collection['end_time']);
+
+        console.log(start_time, end_time)
         const current_time = new Date();
 
         if(current_time >= start_time && current_time < end_time) {
