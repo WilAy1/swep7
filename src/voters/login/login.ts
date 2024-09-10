@@ -61,7 +61,7 @@ export class Login {
     }
 
     
-    async login() : Promise<APIResponse> {
+    async login(sendMail = true) : Promise<APIResponse> {
         try {
             const polls = new Polls(this.collectionId);
             const { exists: collectionExists, reason } = await polls.collectionExists();
@@ -153,8 +153,10 @@ export class Login {
                 );
             }
 
-            const mail = new Mail(this.email);
-            await mail.sendVotersCode(code, collectionDetails['title']);
+            if(sendMail){
+                const mail = new Mail(this.email);
+                await mail.sendVotersCode(code, collectionDetails['title']);
+            }
 
             // sendMail(code);
 
@@ -186,7 +188,7 @@ export class Login {
 
     async verify(code: string){
         try {
-            const loginResponse: APIResponse = await this.login();
+            const loginResponse: APIResponse = await this.login(false);
             if(!loginResponse.success){
                 return loginResponse;
             }
